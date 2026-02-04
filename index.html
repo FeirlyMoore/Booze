@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30-Day Protocol | Планировщик системного запоя</title>
+    <meta name="description" content="Детальный 30-дневный план системного запоя для двух человек. Расчёт бюджета, графика приёма, медицинского протокола и логистики.">
+    <meta name="keywords" content="запой, план запоя, 30 дней, алкоголь, бюджет запоя, протокол, абстиненция, водка">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-blue: #0056B3;
+            --primary-green: #28A745;
+            --dark-text: #2D3748;
+            --light-text: #718096;
+            --bg-light: #F7FAFC;
+            --border-color: #E2E8F0;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-text);
+            background-color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container { 
+            width: 100%;
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+
+        /* Header & Mobile Menu */
+        .site-header { 
+            padding: 1.5rem 0; 
+            border-bottom: 1px solid var(--border-color);
+            background: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo { 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            color: var(--primary-blue); 
+            text-decoration: none;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 101;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            min-width: 200px;
+            z-index: 100;
+            margin-top: 10px;
+            padding: 10px 0;
+        }
+
+        .mobile-menu.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--dark-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-menu a:hover {
+            background-color: var(--bg-light);
+            color: var(--primary-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, var(--bg-light) 100%);
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            color: var(--light-text);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .kpi-stats {
+            display: flex;
+            justify-content: center;
+            gap: clamp(1.5rem, 3vw, 3rem);
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            min-width: 120px;
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 700;
+            color: var(--primary-blue);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--light-text);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.5rem;
+        }
+
+        /* Calculator & Cards */
+        .section-title {
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--dark-text);
+            scroll-margin-top: 80px;
+        }
+
+        .calculator-card, .results-card, .protocol-card, .benefits-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            width: 100%;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+            font-size: 0.95rem;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: var(--white);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+            max-width: 300px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .btn-primary:hover { 
+            background-color: #004494; 
+        }
+
+        /* Chart & Results */
+        .results-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .results-row {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .chart-container { 
+            height: 300px;
+            width: 100%;
+            position: relative;
+        }
+
+        @media (max-width: 767px) {
+            .chart-container {
+                height: 250px;
+            }
+        }
+
+        .key-results .result-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .result-item:last-child { 
+            border-bottom: none; 
+        }
+
+        .result-label { 
+            color: var(--light-text); 
+            font-size: 0.95rem; 
+            display: block;
+        }
+
+        .result-value {
+            font-size: clamp(1.3rem, 2vw, 1.5rem);
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-top: 0.2rem;
+            display: block;
+        }
+
+        /* Monthly Costs Indicator */
+        .monthly-indicator {
+            background-color: #E3F2FD;
+            border: 1px solid #90CAF9;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            color: #1565C0;
+        }
+
+        .monthly-indicator strong {
+            color: #0D47A1;
+        }
+
+        /* Tabs */
+        .tabs-nav {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .tabs-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.2rem;
+            background: none;
+            border: none;
+            font-weight: 500;
+            color: var(--light-text);
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .tab-btn {
+                padding: 0.7rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        .tab-btn:hover { 
+            color: var(--primary-blue); 
+        }
+
+        .tab-btn.active {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--primary-blue);
+        }
+
+        .tab-content { 
+            display: none; 
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        .protocol-step {
+            background-color: var(--bg-light);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-green);
+        }
+
+        .protocol-step h4 { 
+            margin-bottom: 0.5rem; 
+            color: var(--dark-text); 
+            font-size: 1.1rem;
+        }
+
+        .protocol-step p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Benefits Section */
+        .benefits-card h3 { 
+            margin-bottom: 1.5rem; 
+            font-size: 1.4rem;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .column ul { 
+            list-style: none; 
+        }
+
+        .column li {
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed var(--border-color);
+            position: relative;
+            padding-left: 1.8rem;
+            font-size: 0.95rem;
+        }
+
+        .column li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary-green);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .without .column-title { 
+            color: #E53E3E; 
+            font-size: 1.2rem;
+        }
+
+        .with .column-title { 
+            color: var(--primary-green); 
+            font-size: 1.2rem;
+        }
+
+        .without li:before { 
+            content: '✗'; 
+            color: #E53E3E; 
+        }
+
+        /* Footer */
+        .site-footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--light-text);
+            font-size: 0.9rem;
+            background: var(--bg-light);
+        }
+
+        .footer-cta {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+        }
+
+        .warning-note {
+            background-color: #FFF3CD;
+            border: 1px solid #FFEEBA;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
+        /* Mobile Menu Styles */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .hero {
+                padding: 2rem 1rem;
+            }
+            
+            .kpi-stats {
+                gap: 1rem;
+            }
+            
+            .stat-box {
+                min-width: 100px;
+            }
+            
+            .calculator-card, 
+            .results-card, 
+            .protocol-card, 
+            .benefits-card {
+                padding: 1.2rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .site-header,
+            .btn-primary,
+            .mobile-menu-btn,
+            .mobile-menu {
+                display: none;
+            }
+            
+            .container {
+                max-width: 100%;
+                padding: 0;
+            }
+            
+            .hero {
+                background: none;
+                padding: 1rem 0;
+            }
+            
+            .calculator-card,
+            .results-card,
+            .protocol-card,
+            .benefits-card {
+                box-shadow: none;
+                border: 1px solid #000;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">30-Day Protocol</a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="mobile-menu" id="mobileMenu">
+                    <a href="#calculator" onclick="closeMobileMenu()">Калькулятор</a>
+                    <a href="#results" onclick="closeMobileMenu()">Результаты</a>
+                    <a href="#protocol" onclick="closeMobileMenu()">Протокол</a>
+                    <a href="#comparison" onclick="closeMobileMenu()">Сравнение</a>
+                    <a href="#footer" onclick="closeMobileMenu()">Предупреждение</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>30-дневный протокол системного запоя</h1>
+            <p>Детальный план, расчёт бюджета и медицинский протокол для безопасного и непрерывного проведения запоя продолжительностью 30 суток для двух человек.</p>
+            <div class="kpi-stats">
+                <div class="stat-box"><span class="stat-value" id="statDays">30</span><span class="stat-label">Дней</span></div>
+                <div class="stat-box"><span class="stat-value" id="statBudget">67.8K</span><span class="stat-label">Бюджет (₽)</span></div>
+                <div class="stat-box"><span class="stat-value" id="statBottles">90</span><span class="stat-label">Бутылок</span></div>
+            </div>
+        </section>
+
+        <section id="calculator">
+            <h2 class="section-title">Калькулятор плана запоя</h2>
+            <div class="calculator-card">
+                <p style="color: var(--light-text); margin-bottom: 1.5rem;">Введите исходные данные для расчёта персонального плана.</p>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="duration">Продолжительность (дней)</label>
+                        <input type="number" id="duration" min="1" max="365" value="30">
+                        <small style="color: var(--light-text); display: block; margin-top: 5px;">Максимум 365 дней</small>
+                    </div>
+                    <div class="input-group">
+                        <label for="participants">Количество участников</label>
+                        <input type="number" id="participants" min="1" max="10" value="2">
+                    </div>
+                    <div class="input-group">
+                        <label for="dailyIncome">Доход на человека за смену (₽)</label>
+                        <input type="number" id="dailyIncome" value="2340">
+                    </div>
+                    <div class="input-group">
+                        <label for="vodkaPrice">МРЦ водки 0.5л, 40% (₽)</label>
+                        <input type="number" id="vodkaPrice" value="409">
+                    </div>
+                    <div class="input-group">
+                        <label for="dailyDose">Суточная норма на чел. (мл чист. спирта)</label>
+                        <input type="number" id="dailyDose" value="220">
+                        <small style="color: var(--light-text); display: block; margin-top: 5px;">200-250 мл для поддержания состояния</small>
+                    </div>
+                    <div class="input-group">
+                        <label for="cigarettes">Потребление сигарет</label>
+                        <select id="cigarettes">
+                            <option value="20">Да, 20 пачек в день на двоих</option>
+                            <option value="10">Да, 10 пачек в день на двоих</option>
+                            <option value="5">Да, 5 пачек в день на двоих</option>
+                            <option value="2">Да, 2 пачки в день на двоих</option>
+                            <option value="0">Нет</option>
+                        </select>
+                        <small style="color: var(--light-text); display: block; margin-top: 5px;">1 блок = 10 пачек, 1 пачка = 20 сигарет</small>
+                    </div>
+                </div>
+                <div class="monthly-indicator" id="monthlyInfo" style="display: none;">
+                    <strong>Важно:</strong> При расчёте учтены повторяющиеся ежемесячные расходы: 
+                    <span id="monthlyCount">0</span> × Аптечка (2,000 ₽) + 
+                    <span id="monthlyCount2">0</span> × Коммунальные платежи (5,000 ₽)
+                </div>
+                <button class="btn-primary" onclick="calculatePlan()">Рассчитать детальный план</button>
+            </div>
+        </section>
+
+        <section id="results">
+            <h2 class="section-title">Результаты расчёта вашего плана</h2>
+            <div class="results-card">
+                <div class="results-row">
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="budgetChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="key-results">
+                        <div class="result-item">
+                            <div class="result-label">Общий бюджет на весь срок</div>
+                            <div class="result-value" id="totalBudget">0 ₽</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Всего нужно водки</div>
+                            <div class="result-value" id="totalAlcohol">0 л</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Смен для накопления</div>
+                            <div class="result-value" id="accumulationPeriod">0</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Периодов по 30 дней</div>
+                            <div class="result-value" id="monthlyPeriods">1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="protocol">
+            <h2 class="section-title">Детальный протокол проведения</h2>
+            <div class="protocol-card">
+                <div class="tabs-nav">
+                    <button class="tab-btn active" onclick="showTab('logistics')">Финансы и логистика</button>
+                    <button class="tab-btn" onclick="showTab('medical')">Медицинский протокол</button>
+                    <button class="tab-btn" onclick="showTab('behavioral')">Правила поведения</button>
+                    <button class="tab-btn" onclick="showTab('exit')">Выход из запоя</button>
+                </div>
+                <div id="logistics" class="tab-content active">
+                    <div class="protocol-step"><h4>1. Бюджетирование</h4><p>Минимальная суточная потребность для поддержания состояния — 1.5 л водки на двоих. За 30 дней: 45 л (90 бутылок). Бюджет: <span id="detailAlcoholCost">36 810 ₽</span> на алкоголь + <span id="detailFoodCost">9 000 ₽</span> на еду + <span id="detailCigaretteCost">15 000 ₽</span> на сигареты + <span id="detailMedicineCost">2 000 ₽</span> на аптечку + <span id="detailUtilitiesCost">5 000 ₽</span> на коммуналку. <strong>Итого: <span id="detailTotalBudget">67 810 ₽</span></strong>.</p></div>
+                    <div class="protocol-step"><h4>2. Накопление средств</h4><p id="accumulationStep">Требуемая сумма на человека: 33 905 ₽. При доходе 2 340 ₽/смену необходимо отработать ≈14.5 смен. <strong>Действие: отработать 15 смен</strong>, отложив все деньги (35 100 ₽/чел). Общий фонд пары: 70 200 ₽.</p></div>
+                    <div class="protocol-step"><h4>3. Логистика и закупки (за 2 дня до старта)</h4><p id="purchaseStep">Закупить 90 бутылок водки. Закупить продукты длительного хранения (лапша, консервы, соленья, колбаса, сыр) ≈7 000 ₽. Закупить сигареты (60 блоков / 600 пачек) ≈15 000 ₽. Комплект аптечки (уголь, анальгин, цитрамон, валокордин, панангин, витамин С, мезим) ≈3 000 ₽. <strong>Место проведения:</strong> квартира/дом. Отключить домофон, звонок. Предупредить соседей об "отпуске". Запасной ключ никому не доверять.</p></div>
+                </div>
+                <div id="medical" class="tab-content">
+                    <div class="protocol-step"><h4>График приёма алкоголя (режим "Система")</h4><p>Цель: поддержание постоянной концентрации этанола для предотвращения абстиненции.<br><strong id="scheduleDetailsFull">08:00 — 100-150 мл/чел (съем тремора, тахикардии).<br>13:00 — 100-150 мл/чел (поддержание).<br>18:00 — 100-150 мл/чел.<br>23:00 — 100-150 мл/чел (на ночь).</strong><br>Ночные микродозы: при пробуждении от тремора — 50 мл для стабилизации. <u>Важно:</u> запивать большим количеством жидкости, закусывать обязательно (хлеб, сыр, бульон).</p></div>
+                    <div class="protocol-step"><h4>План питания</h4><p><strong>Утро:</strong> плотный завтрак до первой рюмки (яичница, оладьи).<br><strong>День:</strong> жирная пища (холодец, мясной суп) для защиты слизистой.<br><strong>Вечер:</strong> углеводы (макароны, картофель) для энергии.<br><strong>Постоянно:</strong> не менее 3 л жидкости/чел/сутки (вода, рассол, морс).</p></div>
+                    <div class="protocol-step"><h4>Медицинский мониторинг и опасные признаки</h4><p><strong>Ежедневно:</strong> измерять пульс (норма до 90 уд/мин) и давление (норма до 140/90). Превышение — повод снизить дозу, принять корвалол, панангин.<br><strong>Признаки опасности (требуют немедленного прекращения и вызова скорой):</strong><br> • Рвота/кал с кровью (риск язвы).<br> • Острая «кинжальная» боль в животе (панкреатит).<br> • Желтушность кожи/глаз (поражение печени).<br> • Сильная боль в груди, аритмия.<br> • Галлюцинации, паника, тремор, не купируемые алкоголем (начало делирия).</p></div>
+                </div>
+                <div id="behavioral" class="tab-content">
+                    <div class="protocol-step"><h4>Взаимодействие между участниками</h4><p><strong>Сменный график бодрствования:</strong> один человек всегда должен быть относительно трезв для контроля обстановки, оказания первой помощи, ответа на экстренный звонок.<br><strong>Запрет на конфликты:</strong> любые ссоры немедленно гасятся дополнительной дозой и сном.<br><strong>Запрет на выход из помещения:</strong> покидать квартиру строго запрещено. Риск правонарушений, ДТП, потери.</p></div>
+                    <div class="protocol-step"><h4>Внешние коммуникации</h4><p><strong>Телефоны:</strong> перевести в авиарежим. Разрешить 1 проверку в день в 12:00 на 10 минут для критически важных сообщений.<br><strong>Социальные сети:</strong> не открывать.<br><strong>Дверь:</strong> не открывать никому.</p></div>
+                </div>
+                <div id="exit" class="tab-content">
+                    <div class="protocol-step"><h4>Протокол выхода из запоя (Дни 31-35)</h4><p><strong>ВНИМАНИЕ:</strong> Резкое прекращение по истечении 30 дней опасно для жизни. Требуется мягкий выход.<br><strong>День 31:</strong> Снижение суточной дозы на 30%. Вместо 1.5 л на двоих — 1.0 л. Увеличить потребление пищи, воды, принять витамины.<br><strong>День 32:</strong> Доза 0.7 л. Подключить седативные: валокордин по 30 капель 3 раза в день.<br><strong>День 33:</strong> Доза 0.5 л. Только на ночь для сна.<br><strong>День 34:</strong> Доза 0.25 л (одна рюмка на ночь).<br><strong>День 35:</strong> Полная отмена. Прием сорбентов, обильное питье, легкая пища. Готовность вызвать врача при симптомах абстиненции.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparison">
+            <h2 class="section-title">С чем вы столкнётесь</h2>
+            <div class="benefits-card">
+                <h3>Без плана vs. С этим планом</h3>
+                <div class="comparison">
+                    <div class="column without">
+                        <h4 class="column-title">Без детального плана</h4>
+                        <ul>
+                            <li>Деньги закончатся на 10-15 день</li>
+                            <li>Постоянная абстиненция, тремор, паника</li>
+                            <li>Конфликты между участниками</li>
+                            <li>Риск выхода на улицу в неадекватном состоянии</li>
+                            <li>Резкий, опасный для жизни выход</li>
+                            <li>Высокий риск госпитализации</li>
+                        </ul>
+                    </div>
+                    <div class="column with">
+                        <h4 class="column-title">С этим протоколом</h4>
+                        <ul>
+                            <li>Финансовая обеспеченность на весь срок</li>
+                            <li>Стабильное состояние, отсутствие тяжёлой ломки</li>
+                            <li>Чёткие правила предотвращают конфликты</li>
+                            <li>Полная изоляция минимизирует риски</li>
+                            <li>Безопасный 5-дневный выход из состояния</li>
+                            <li>Контроль здоровья, план действий при опасности</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="footer">
+        <div class="container">
+            <div class="footer-cta">30-дневный протокол системного запоя</div>
+            <p>Детальное планирование — ключ к контролю над процессом. Используйте калькулятор для актуальных расчётов и строго следуйте протоколу.</p>
+            <div class="warning-note">
+                <strong>ВАЖНО:</strong> Данный материал является техническим расчётом. Длительный запой крайне опасен для физического и психического здоровья, приводит к необратимому повреждению органов (печень, сердце, мозг, поджелудочная железа) и представляет угрозу для жизни. При возникновении любых опасных симптомов немедленно прекратите приём алкоголя и вызовите скорую медицинскую помощь.
+            </div>
+            <p style="margin-top: 1.5rem; font-size: 0.8rem;">© 2025 30-Day Protocol. Ответственность за применение информации лежит полностью на пользователе.</p>
+        </div>
+    </footer>
+
+    <script>
+        let budgetChart = null;
+        const state = {};
+
+        function calculatePlan() {
+            const duration = parseInt(document.getElementById('duration').value);
+            const participants = parseInt(document.getElementById('participants').value);
+            const dailyIncome = parseInt(document.getElementById('dailyIncome').value);
+            const vodkaPrice = parseInt(document.getElementById('vodkaPrice').value);
+            const dailyDose = parseInt(document.getElementById('dailyDose').value);
+            const cigarettes = parseInt(document.getElementById('cigarettes').value);
+
+            // Сохраняем для обновления статистики
+            state.duration = duration;
+            state.participants = participants;
+
+            // Рассчитываем количество 30-дневных периодов (округляем вверх)
+            const monthlyPeriods = Math.ceil(duration / 30);
+            
+            // Показываем информацию о ежемесячных расходах если периодов больше 1
+            const monthlyInfo = document.getElementById('monthlyInfo');
+            if (monthlyPeriods > 1) {
+                monthlyInfo.style.display = 'block';
+                document.getElementById('monthlyCount').textContent = monthlyPeriods;
+                document.getElementById('monthlyCount2').textContent = monthlyPeriods;
+            } else {
+                monthlyInfo.style.display = 'none';
+            }
+
+            // Логика расчёта (точные формулы из вашего ТЗ)
+            const dailyPureAlcoholPerPerson = dailyDose; // мл чистого спирта
+            const dailyAlcoholVolume = (dailyPureAlcoholPerPerson / 0.4) * participants; // мл водки
+            const totalAlcoholVolume = (dailyAlcoholVolume * duration) / 1000; // литры водки
+            const bottlesNeeded = Math.ceil((totalAlcoholVolume * 1000) / 500);
+            const alcoholCost = bottlesNeeded * vodkaPrice;
+
+            const foodCost = 300 * duration * participants;
+            
+            // Исправлено: сигареты считаем в пачках (1 пачка = 250 руб / 10 = 25 руб за пачку)
+            const cigarettePackPrice = 25; // 250 руб за блок / 10 пачек = 25 руб за пачку
+            const cigaretteCost = cigarettes * cigarettePackPrice * duration;
+            
+            // Аптечка и коммуналка умножаются на количество 30-дневных периодов
+            const medicineCostPerPeriod = 2000;
+            const utilitiesCostPerPeriod = 5000;
+            const medicineCost = medicineCostPerPeriod * monthlyPeriods;
+            const utilitiesCost = utilitiesCostPerPeriod * monthlyPeriods;
+            
+            const totalBudget = alcoholCost + foodCost + cigaretteCost + medicineCost + utilitiesCost;
+
+            const incomePerPerson = dailyIncome;
+            const totalIncomeForTwo = incomePerPerson * participants;
+            const accumulationShifts = Math.ceil(totalBudget / totalIncomeForTwo);
+
+            // Обновление главной статистики
+            document.getElementById('statDays').textContent = duration;
+            document.getElementById('statBudget').textContent = (totalBudget / 1000).toFixed(1) + 'K';
+            document.getElementById('statBottles').textContent = bottlesNeeded;
+
+            // Обновление блока результатов
+            document.getElementById('totalBudget').textContent = totalBudget.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('totalAlcohol').textContent = totalAlcoholVolume.toFixed(1) + ' л';
+            document.getElementById('accumulationPeriod').textContent = accumulationShifts + ' смен';
+            document.getElementById('monthlyPeriods').textContent = monthlyPeriods;
+
+            // Обновление деталей в протоколе (вкладка "Финансы")
+            document.getElementById('detailAlcoholCost').textContent = alcoholCost.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('detailFoodCost').textContent = foodCost.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('detailCigaretteCost').textContent = cigaretteCost.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('detailMedicineCost').textContent = medicineCost.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('detailUtilitiesCost').textContent = utilitiesCost.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('detailTotalBudget').textContent = totalBudget.toLocaleString('ru-RU') + ' ₽';
+
+            document.getElementById('accumulationStep').innerHTML = `Требуемая сумма на человека: ${Math.ceil(totalBudget/participants).toLocaleString('ru-RU')} ₽. При доходе ${dailyIncome.toLocaleString('ru-RU')} ₽/смену необходимо отработать ≈${(totalBudget/(participants * dailyIncome)).toFixed(1)} смен. <strong>Действие: отработать ${accumulationShifts} смен</strong>, отложив все деньги (${(accumulationShifts * dailyIncome).toLocaleString('ru-RU')} ₽/чел). Общий фонд пары: ${(accumulationShifts * dailyIncome * participants).toLocaleString('ru-RU')} ₽.`;
+            
+            // Исправлено: показываем правильное количество пачек
+            const totalPacks = cigarettes * duration;
+            const totalBlocks = Math.ceil(totalPacks / 10); // 10 пачек в блоке
+            document.getElementById('purchaseStep').innerHTML = `Закупить <strong>${bottlesNeeded} бутылок водки</strong>. Закупить продукты длительного хранения ≈${foodCost.toLocaleString('ru-RU')} ₽. Закупить сигареты (${totalBlocks} блоков / ${totalPacks} пачек) ≈${cigaretteCost.toLocaleString('ru-RU')} ₽. Комплект аптечки ≈${medicineCost.toLocaleString('ru-RU')} ₽. <strong>Аптечка и коммунальные платежи учтены за ${monthlyPeriods} период(а) по 30 дней.</strong>`;
+
+            // Обновление графика приёма
+            const dosePerIntake = Math.ceil(dailyAlcoholVolume / (4 * participants));
+            document.getElementById('scheduleDetailsFull').innerHTML = `08:00 — ${dosePerIntake} мл/чел (съем тремора, тахикардии).<br>13:00 — ${dosePerIntake} мл/чел (поддержание).<br>18:00 — ${dosePerIntake} мл/чел.<br>23:00 — ${dosePerIntake} мл/чел (на ночь).`;
+
+            // Построение / обновление диаграммы бюджета
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+            if (budgetChart) budgetChart.destroy();
+            budgetChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Алкоголь', 'Питание', 'Сигареты', 'Аптечка', 'Коммуналка'],
+                    datasets: [{
+                        data: [alcoholCost, foodCost, cigaretteCost, medicineCost, utilitiesCost],
+                        backgroundColor: ['#0056B3', '#28A745', '#6F42C1', '#FFC107', '#17A2B8'],
+                        borderWidth: 2,
+                        borderColor: '#fff',
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: window.innerWidth < 768 ? 10 : 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const value = context.raw;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    label += value.toLocaleString('ru-RU') + ' ₽ (' + percentage + '%)';
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+
+            // Показываем секцию результатов
+            document.getElementById('results').style.display = 'block';
+            
+            // Прокрутка к результатам на мобильных устройствах
+            if (window.innerWidth < 768) {
+                document.getElementById('results').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            menuBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            
+            // Prevent scrolling when menu is open
+            document.body.style.overflow = menuBtn.classList.contains('active') ? 'hidden' : '';
+        }
+
+        function closeMobileMenu() {
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            menuBtn.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Initialize mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileMenu);
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            if (!menuBtn.contains(event.target) && !mobileMenu.contains(event.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeMobileMenu();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (budgetChart && window.innerWidth < 768) {
+                budgetChart.resize();
+            }
+            
+            // Close menu on resize to desktop
+            if (window.innerWidth > 768) {
+                closeMobileMenu();
+            }
+        });
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            calculatePlan(); // Рассчитываем с данными по умолчанию
+            
+            // Initialize mobile menu
+            const tabsNav = document.querySelector('.tabs-nav');
+            if (window.innerWidth < 768 && tabsNav) {
+                tabsNav.style.overflowX = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
