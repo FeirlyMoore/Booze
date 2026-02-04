@@ -1,11 +1,56 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" itemscope itemtype="http://schema.org/WebPage">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>30-Day Protocol | Планировщик системного запоя</title>
-    <meta name="description" content="Детальный 30-дневный план системного запоя для двух человек. Расчёт бюджета, графика приёма, медицинского протокола и логистики.">
-    <meta name="keywords" content="запой, план запоя, 30 дней, алкоголь, бюджет запоя, протокол, абстиненция, водка">
+    
+    <!-- SEO OPTIMIZATION -->
+    <title>30-дневный системный запой: калькулятор бюджета, протокол безопасности 2024 | Полный гайд</title>
+    <meta name="description" content="Калькулятор 30-дневного системного запоя для двоих. Рассчитайте бюджет, получите медицинский протокол, график приёма алкоголя и план безопасного выхода. Всё о системном запое на месяц.">
+    <meta name="keywords" content="запой 30 дней, калькулятор запоя, бюджет на запой, системный запой, алкогольный запой, сколько стоит запой, водка на месяц, план запоя, медицинский протокол, выход из запоя, безопасный запой, абстинентный синдром, запой для двоих, 30-дневный протокол, расчет запоя, алкогольный калькулятор">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="30-дневный системный запой: калькулятор бюджета и протокол безопасности 2024">
+    <meta property="og:description" content="Онлайн-калькулятор для расчёта бюджета 30-дневного запоя. Медицинский протокол, график приёма, безопасность.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://feirlymoore.github.io/Booze/">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://feirlymoore.github.io/Booze/">
+    
+    <!-- Robots -->
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "30-дневный системный запой: калькулятор и протокол",
+        "description": "Онлайн-калькулятор для расчёта бюджета 30-дневного системного запоя для двух человек",
+        "url": "https://feirlymoore.github.io/Booze/",
+        "inLanguage": "ru-RU",
+        "mainEntity": {
+            "@type": "HowTo",
+            "name": "30-дневный системный запой: полное руководство",
+            "description": "Пошаговое руководство по планированию и проведению 30-дневного системного запоя",
+            "step": [
+                {
+                    "@type": "HowToStep",
+                    "name": "Расчёт бюджета с помощью калькулятора",
+                    "text": "Используйте калькулятор для точного расчёта стоимости 30-дневного запоя"
+                },
+                {
+                    "@type": "HowToStep",
+                    "name": "Следование медицинскому протоколу",
+                    "text": "Соблюдайте график приёма алкоголя и правила безопасности"
+                }
+            ]
+        }
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -48,7 +93,6 @@
             padding: 0 20px; 
         }
 
-        /* Header & Mobile Menu */
         .site-header { 
             padding: 1.5rem 0; 
             border-bottom: 1px solid var(--border-color);
@@ -143,7 +187,6 @@
             color: var(--primary-blue);
         }
 
-        /* Hero Section */
         .hero {
             text-align: center;
             padding: 3rem 1rem;
@@ -196,7 +239,6 @@
             margin-top: 0.5rem;
         }
 
-        /* Calculator & Cards */
         .section-title {
             font-size: clamp(1.4rem, 3vw, 1.8rem);
             font-weight: 600;
@@ -272,7 +314,6 @@
             background-color: #004494; 
         }
 
-        /* Chart & Results */
         .results-row {
             display: grid;
             grid-template-columns: 1fr;
@@ -321,7 +362,6 @@
             display: block;
         }
 
-        /* Monthly Costs Indicator */
         .monthly-indicator {
             background-color: #E3F2FD;
             border: 1px solid #90CAF9;
@@ -336,7 +376,6 @@
             color: #0D47A1;
         }
 
-        /* Tabs */
         .tabs-nav {
             display: flex;
             border-bottom: 1px solid var(--border-color);
@@ -423,7 +462,6 @@
             line-height: 1.5;
         }
 
-        /* Benefits Section */
         .benefits-card h3 { 
             margin-bottom: 1.5rem; 
             font-size: 1.4rem;
@@ -477,7 +515,6 @@
             color: #E53E3E; 
         }
 
-        /* Footer */
         .site-footer {
             text-align: center;
             padding: 2rem 1rem;
@@ -506,7 +543,6 @@
             text-align: left;
         }
 
-        /* Mobile Menu Styles */
         @media (max-width: 768px) {
             .mobile-menu-btn {
                 display: flex;
@@ -532,7 +568,6 @@
             }
         }
 
-        /* Print Styles */
         @media print {
             .site-header,
             .btn-primary,
@@ -757,14 +792,11 @@
             const dailyDose = parseInt(document.getElementById('dailyDose').value);
             const cigarettes = parseInt(document.getElementById('cigarettes').value);
 
-            // Сохраняем для обновления статистики
             state.duration = duration;
             state.participants = participants;
 
-            // Рассчитываем количество 30-дневных периодов (округляем вверх)
             const monthlyPeriods = Math.ceil(duration / 30);
             
-            // Показываем информацию о ежемесячных расходах если периодов больше 1
             const monthlyInfo = document.getElementById('monthlyInfo');
             if (monthlyPeriods > 1) {
                 monthlyInfo.style.display = 'block';
@@ -774,20 +806,17 @@
                 monthlyInfo.style.display = 'none';
             }
 
-            // Логика расчёта (точные формулы из вашего ТЗ)
-            const dailyPureAlcoholPerPerson = dailyDose; // мл чистого спирта
-            const dailyAlcoholVolume = (dailyPureAlcoholPerPerson / 0.4) * participants; // мл водки
-            const totalAlcoholVolume = (dailyAlcoholVolume * duration) / 1000; // литры водки
+            const dailyPureAlcoholPerPerson = dailyDose;
+            const dailyAlcoholVolume = (dailyPureAlcoholPerPerson / 0.4) * participants;
+            const totalAlcoholVolume = (dailyAlcoholVolume * duration) / 1000;
             const bottlesNeeded = Math.ceil((totalAlcoholVolume * 1000) / 500);
             const alcoholCost = bottlesNeeded * vodkaPrice;
 
             const foodCost = 300 * duration * participants;
             
-            // Исправлено: сигареты считаем в пачках (1 пачка = 250 руб / 10 = 25 руб за пачку)
-            const cigarettePackPrice = 25; // 250 руб за блок / 10 пачек = 25 руб за пачку
+            const cigarettePackPrice = 25;
             const cigaretteCost = cigarettes * cigarettePackPrice * duration;
             
-            // Аптечка и коммуналка умножаются на количество 30-дневных периодов
             const medicineCostPerPeriod = 2000;
             const utilitiesCostPerPeriod = 5000;
             const medicineCost = medicineCostPerPeriod * monthlyPeriods;
@@ -799,18 +828,15 @@
             const totalIncomeForTwo = incomePerPerson * participants;
             const accumulationShifts = Math.ceil(totalBudget / totalIncomeForTwo);
 
-            // Обновление главной статистики
             document.getElementById('statDays').textContent = duration;
             document.getElementById('statBudget').textContent = (totalBudget / 1000).toFixed(1) + 'K';
             document.getElementById('statBottles').textContent = bottlesNeeded;
 
-            // Обновление блока результатов
             document.getElementById('totalBudget').textContent = totalBudget.toLocaleString('ru-RU') + ' ₽';
             document.getElementById('totalAlcohol').textContent = totalAlcoholVolume.toFixed(1) + ' л';
             document.getElementById('accumulationPeriod').textContent = accumulationShifts + ' смен';
             document.getElementById('monthlyPeriods').textContent = monthlyPeriods;
 
-            // Обновление деталей в протоколе (вкладка "Финансы")
             document.getElementById('detailAlcoholCost').textContent = alcoholCost.toLocaleString('ru-RU') + ' ₽';
             document.getElementById('detailFoodCost').textContent = foodCost.toLocaleString('ru-RU') + ' ₽';
             document.getElementById('detailCigaretteCost').textContent = cigaretteCost.toLocaleString('ru-RU') + ' ₽';
@@ -820,16 +846,13 @@
 
             document.getElementById('accumulationStep').innerHTML = `Требуемая сумма на человека: ${Math.ceil(totalBudget/participants).toLocaleString('ru-RU')} ₽. При доходе ${dailyIncome.toLocaleString('ru-RU')} ₽/смену необходимо отработать ≈${(totalBudget/(participants * dailyIncome)).toFixed(1)} смен. <strong>Действие: отработать ${accumulationShifts} смен</strong>, отложив все деньги (${(accumulationShifts * dailyIncome).toLocaleString('ru-RU')} ₽/чел). Общий фонд пары: ${(accumulationShifts * dailyIncome * participants).toLocaleString('ru-RU')} ₽.`;
             
-            // Исправлено: показываем правильное количество пачек
             const totalPacks = cigarettes * duration;
-            const totalBlocks = Math.ceil(totalPacks / 10); // 10 пачек в блоке
+            const totalBlocks = Math.ceil(totalPacks / 10);
             document.getElementById('purchaseStep').innerHTML = `Закупить <strong>${bottlesNeeded} бутылок водки</strong>. Закупить продукты длительного хранения ≈${foodCost.toLocaleString('ru-RU')} ₽. Закупить сигареты (${totalBlocks} блоков / ${totalPacks} пачек) ≈${cigaretteCost.toLocaleString('ru-RU')} ₽. Комплект аптечки ≈${medicineCost.toLocaleString('ru-RU')} ₽. <strong>Аптечка и коммунальные платежи учтены за ${monthlyPeriods} период(а) по 30 дней.</strong>`;
 
-            // Обновление графика приёма
             const dosePerIntake = Math.ceil(dailyAlcoholVolume / (4 * participants));
             document.getElementById('scheduleDetailsFull').innerHTML = `08:00 — ${dosePerIntake} мл/чел (съем тремора, тахикардии).<br>13:00 — ${dosePerIntake} мл/чел (поддержание).<br>18:00 — ${dosePerIntake} мл/чел.<br>23:00 — ${dosePerIntake} мл/чел (на ночь).`;
 
-            // Построение / обновление диаграммы бюджета
             const ctx = document.getElementById('budgetChart').getContext('2d');
             if (budgetChart) budgetChart.destroy();
             budgetChart = new Chart(ctx, {
@@ -877,10 +900,8 @@
                 }
             });
 
-            // Показываем секцию результатов
             document.getElementById('results').style.display = 'block';
             
-            // Прокрутка к результатам на мобильных устройствах
             if (window.innerWidth < 768) {
                 document.getElementById('results').scrollIntoView({ 
                     behavior: 'smooth',
@@ -896,7 +917,6 @@
             document.getElementById(tabName).classList.add('active');
         }
 
-        // Mobile menu functions
         function toggleMobileMenu() {
             const menuBtn = document.getElementById('mobileMenuBtn');
             const mobileMenu = document.getElementById('mobileMenu');
@@ -904,7 +924,6 @@
             menuBtn.classList.toggle('active');
             mobileMenu.classList.toggle('active');
             
-            // Prevent scrolling when menu is open
             document.body.style.overflow = menuBtn.classList.contains('active') ? 'hidden' : '';
         }
 
@@ -917,10 +936,8 @@
             document.body.style.overflow = '';
         }
 
-        // Initialize mobile menu
         document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileMenu);
 
-        // Close menu when clicking outside
         document.addEventListener('click', function(event) {
             const menuBtn = document.getElementById('mobileMenuBtn');
             const mobileMenu = document.getElementById('mobileMenu');
@@ -930,30 +947,25 @@
             }
         });
 
-        // Close menu on escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeMobileMenu();
             }
         });
 
-        // Handle window resize
         window.addEventListener('resize', function() {
             if (budgetChart && window.innerWidth < 768) {
                 budgetChart.resize();
             }
             
-            // Close menu on resize to desktop
             if (window.innerWidth > 768) {
                 closeMobileMenu();
             }
         });
 
-        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', function() {
-            calculatePlan(); // Рассчитываем с данными по умолчанию
+            calculatePlan();
             
-            // Initialize mobile menu
             const tabsNav = document.querySelector('.tabs-nav');
             if (window.innerWidth < 768 && tabsNav) {
                 tabsNav.style.overflowX = 'auto';
